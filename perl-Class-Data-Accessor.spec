@@ -18,7 +18,6 @@ Buildrequires:	perl-devel
 BuildRequires:	perl(Carp)
 Buildrequires:  perl(Module::Build)
 BuildArch:	noarch
-Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 Class::Data::Accessor is the marriage of Class::Accessor and
