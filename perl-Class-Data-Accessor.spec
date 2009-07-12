@@ -1,24 +1,22 @@
-%define module	Class-Data-Accessor
-%define name	perl-%{module}
-%define modprefix Class
-%define version	0.03
-%define release	%mkrel 4
+%define upstream_name	Class-Data-Accessor
+%define upstream_version	0.04004
 
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		perl-%{upstream_name}
+Version:	%perl_convert_version %{upstream_version}
+Release:	%mkrel 1
+
 Summary:	Inheritable, overridable class and instance data accessor creation
 License:	Artistic/GPL
 Group:		Development/Perl
-Source:		ftp://ftp.perl.org/pub/CPAN/modules/by-module/%{modprefix}/%{module}-%{version}.tar.bz2
-URL:		http://search.cpan.org/dist/%{module}/
+URL:		http://search.cpan.org/dist/%{upstream_name}/
+Source0:	ftp://ftp.perl.org/pub/CPAN/modules/by-module/Class/%{upstream_name}-%{upstream_version}.tar.gz
+
 %if %{mdkversion} < 1010
 Buildrequires:	perl-devel
 %endif
 BuildRequires:	perl(Carp)
-Buildrequires:  perl(Module::Build)
 BuildArch:	noarch
-Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}
 
 %description
 Class::Data::Accessor is the marriage of Class::Accessor and
@@ -27,18 +25,18 @@ accessors to class data that overridable in subclasses as well as in
 class instances.
 
 %prep
-%setup -q -n %{module}-%{version}
+%setup -q -n %{upstream_name}-%{upstream_version}
 
 %build
-%{__perl} Build.PL installdirs=vendor destdir=%{buildroot}
-./Build
+%{__perl} Makefile.PL INSTALLDIRS=vendor
+%make
 
 %check
-./Build test
+%make test
 
 %install
 rm -rf %{buildroot}
-./Build install
+%makeinstall_std
 
 %clean 
 rm -rf %{buildroot}
@@ -47,6 +45,5 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc README Changes
 %{_mandir}/*/*
-%{perl_vendorlib}/%{modprefix}
-
+%{perl_vendorlib}/Class
 
